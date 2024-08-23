@@ -1,0 +1,54 @@
+﻿
+@using BanHangAsp.Models
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<TLoaiSp>
+
+
+@{
+    ViewData["Title"] = "QuanlyDanhMuc";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Quản Lý Danh Mục</h2>
+
+<p>
+    <a asp-action="ThemDanhMucMoi">Create New</a>
+</p>
+
+
+<p>@TempData["Message"]</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="table-primary">
+            <th>
+                Tên danh mục
+            </th>
+            <th></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => item.Loai)
+                </td>
+                <td>
+                    <a asp-action="SuaDanhMuc" asp-route-madm="@item.MaLoai">Edit</a> |
+                    <a asp-action="XoaDanhMuc" asp-route-madm="@item.MaLoai" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">Delete</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("QuanlyDanhMuc", new { page }), new X.PagedList.Mvc.Core.PagedListRenderOptions()
+{
+    LiElementClasses = new List<String> { "page-item" },
+    PageClasses = new List<String> { "page-link" }
+})
